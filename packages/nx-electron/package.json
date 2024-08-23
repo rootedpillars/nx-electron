@@ -1,6 +1,6 @@
 {
   "name": "nx-electron",
-  "version": "18.0.1",
+  "version": "18.1.0",
   "main": "src/index.js",
   "description": "Electron Plugin for Nx",
   "author": "Benny Megidish",
