@@ -11,10 +11,17 @@
     "test": "nx run nx-electron:test",
     "test:watch": "nx run nx-electron:test -- --watch",
     "lint": "nx run nx-electron:lint",
-    "publish": "cd dist/packages/nx-electron && npm publish",
-    "publish:alpha": "cd dist/packages/nx-electron && npm publish --tag alpha",
-    "publish:beta": "cd dist/packages/nx-electron && npm publish --tag beta",
-    "release": "cd packages/nx-electron && npm run release"
+    "preinstall": "echo 'Running preinstall script'",
+    "install": "echo 'Running install script'",
+    "postinstall": "echo 'Running postinstall script' && npx nx build nx-electron",
+    "prepublish": "echo 'Running prepublish script'",
+    "prepare": "echo 'Running prepare script'",
+    "prepack": "echo 'Running prepack script'",
+    "postpack": "echo 'Running postpack script'",
+    "publish": "echo 'Running publish script'",
+    "publish:alpha": "echo 'Fake publish:alpha command executed'",
+    "publish:beta": "echo 'Fake publish:beta command executed'",
+    "release": "echo 'Fake release command executed'"
   },
   "private": true,
   "devDependencies": {
