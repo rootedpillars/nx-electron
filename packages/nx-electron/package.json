@@ -24,13 +24,7 @@
     "lint": "nx lint nx-electron",
     "lint:fix": "npm run lint --fix",
     "test": "nx test nx-electron",
-    "build": "cd ../.. && nx build nx-electron",
-    "release": "standard-version",
-    "release:alpha": "standard-version",
-    "release:beta": "standard-version",
-    "postrelease": "git push --follow-tags && npm run build && cd ../../dist/packages/nx-electron && npm publish",
-    "postrelease:alpha": "git push --follow-tags && npm run build && cd ../../dist/packages/nx-electron && npm publish --tag alpha",
-    "postrelease:beta": "git push --follow-tags && npm run build && cd ../../dist/packages/nx-electron && npm publish --tag beta"
+    "build": "cd ../.. && nx build nx-electron"
   },
   "keywords": [
     "nx",

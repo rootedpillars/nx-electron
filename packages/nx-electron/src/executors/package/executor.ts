@@ -45,7 +45,7 @@ export interface PackageElectronBuilderOutput {
 
 export async function executor(
   rawOptions: PackageElectronBuilderOptions,
-  context: ExecutorContext
+  context: ExecutorContext,
 ): Promise<{ success: boolean }> {
   logger.warn(stripIndents`
   *********************************************************
@@ -60,7 +60,7 @@ export async function executor(
     let options = normalizePackagingOptions(
       rawOptions,
       context.root,
-      sourceRoot
+      sourceRoot,
     );
     options = mergePresetOptions(options);
     options = addMissingDefaultOptions(options);
@@ -69,16 +69,18 @@ export async function executor(
     const targets: Map<Platform, Map<Arch, string[]>> = _createTargets(
       platforms,
       null,
-      options.arch
+      options.arch,
     );
     const baseConfig: Configuration = _createBaseConfig(options, context);
     const config: Configuration = _createConfigFromOptions(options, baseConfig);
+
     const normalizedOptions: CliOptions = _normalizeBuilderOptions(
       targets,
       config,
-      rawOptions
+      rawOptions,
     );
 
+    normalizedOptions.projectDir = `dist/${projectRoot}`;
     await beforeBuild(options.root, options.sourcePath, options.name);
     await build(normalizedOptions);
 
@@ -93,11 +95,11 @@ export async function executor(
 async function beforeBuild(
   projectRoot: string,
   sourcePath: string,
-  appName: string
+  appName: string,
 ) {
   await writeFileAsync(
     join(projectRoot, sourcePath, appName, 'index.js'),
-    `const Main = require('./${appName}/main.js');`
+    `const Main = require('./${appName}/main.js');`,
   );
 }
 
@@ -138,14 +140,14 @@ function _createPlatforms(rawPlatforms: string | string[]): Platform[] {
 function _createTargets(
   platforms: Platform[],
   type: string,
-  arch: string
+  arch: string,
 ): Map<Platform, Map<Arch, string[]>> {
   return createTargets(platforms, null, arch);
 }
 
 function _createBaseConfig(
   options: PackageElectronBuilderOptions,
-  context: ExecutorContext
+  context: ExecutorContext,
 ): Configuration {
   const outputPath = options.prepackageOnly
     ? options.outputPath.replace('executables', 'packages')
@@ -208,7 +210,7 @@ function _createBaseConfig(
 
 function _createConfigFromOptions(
   options: PackageElectronBuilderOptions,
-  baseConfig: Configuration
+  baseConfig: Configuration,
 ): Configuration {
   const config = Object.assign({}, options, baseConfig);
 
@@ -232,7 +234,7 @@ function _createConfigFromOptions(
 function _normalizeBuilderOptions(
   targets: Map<Platform, Map<Arch, string[]>>,
   config: Configuration,
-  rawOptions: PackageElectronBuilderOptions
+  rawOptions: PackageElectronBuilderOptions,
 ): CliOptions {
   const normalizedOptions: CliOptions = {
     config,
@@ -249,7 +251,7 @@ function _normalizeBuilderOptions(
 }
 
 function mergePresetOptions(
-  options: PackageElectronBuilderOptions
+  options: PackageElectronBuilderOptions,
 ): PackageElectronBuilderOptions {
   // load preset options file
   const externalOptionsPath: string = options.makerOptionsPath
@@ -259,7 +261,7 @@ function mergePresetOptions(
         options['sourceRoot'],
         'app',
         'options',
-        'maker.options.json'
+        'maker.options.json',
       );
 
   if (statSync(externalOptionsPath).isFile()) {
@@ -272,11 +274,11 @@ function mergePresetOptions(
 }
 
 function addMissingDefaultOptions(
-  options: PackageElectronBuilderOptions
+  options: PackageElectronBuilderOptions,
 ): PackageElectronBuilderOptions {
   // remove unset options (use electron builder default values where possible)
   Object.keys(options).forEach(
-    (key) => options[key] === '' && delete options[key]
+    (key) => options[key] === '' && delete options[key],
   );
 
   return options;
